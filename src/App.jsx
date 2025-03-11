@@ -10,21 +10,35 @@ import Doctor from "./pages/doctors";
 import Virtual from "./pages/virtual";
 import ReportCard from "./pages/report";
 import PatientForm from "./pages/PatientForm";
+import { AuthData } from "./context/authContext";
+
 const App = () => {
+  const { isAuth } = AuthData();
   return (
     <Router>
-      <div>
+      <div className="flex flex-col min-h-screen">
         <Navigation />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/patient-form" element={<PatientForm />} />
-          <Route path="/report" element={<ReportCard />} />
-          <Route path="/" element={<Medimate />} />
-          <Route path="/virtual-consult" element={<Virtual />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/doctors" element={<Doctor />} />
-        </Routes>
+        <div className="pt-20">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={<Medimate />} />
+            <Route
+              path="/patient-form"
+              element={isAuth ? <PatientForm /> : <Login />}
+            />
+            <Route
+              path="/report"
+              element={isAuth ? <ReportCard /> : <Login />}
+            />
+            <Route
+              path="/virtual-consult"
+              element={isAuth ? <Virtual /> : <Login />}
+            />
+            <Route path="/message" element={isAuth ? <Message /> : <Login />} />
+            <Route path="/doctors" element={isAuth ? <Doctor /> : <Login />} />
+          </Routes>
+        </div>
         <Footer />
       </div>
     </Router>

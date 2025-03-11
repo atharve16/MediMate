@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 const AuthContext = createContext();
 
 // Set base URL for consistent API calls
-const API_BASE_URL = "http://localhost:8080/api";
+const SERVER = import.meta.env.SERVER;
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
   async function loginUser(login, navigate) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post(`${API_BASE_URL}/user/login`, login);
+      const { data } = await axios.post(`${SERVER}/user/login`, login);
       console.log("Login response:", data.data);
 
       // Store token and user info
@@ -44,7 +44,7 @@ export const UserProvider = ({ children }) => {
     setBtnLoading(true);
     try {
       // Fixed inconsistent URL, should be same base as other APIs
-      const { data } = await axios.post(`${API_BASE_URL}/user/sign`, sign);
+      const { data } = await axios.post(`${SERVER}/user/sign`, sign);
       console.log("SignIn response:", data.data);
 
       // Store token and user info
@@ -76,7 +76,7 @@ export const UserProvider = ({ children }) => {
     }
 
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/user/${userId}`, {
+      const { data } = await axios.get(`${SERVER}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -107,10 +107,9 @@ export const UserProvider = ({ children }) => {
     navigate("/login");
   };
 
-  // Only fetch user when component mounts, not on every user state change
   useEffect(() => {
     fetchUser();
-  }, []); // Empty dependency array to run only once on mount
+  }, []);
 
   return (
     <AuthContext.Provider
