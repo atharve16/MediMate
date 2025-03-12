@@ -1,5 +1,10 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "../Component/assets/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../Component/assets/Card";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthData } from "../context/authContext";
 
@@ -17,7 +22,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(login);
+    console.log("Logging in with:", login);
     loginUser(login, navigate);
   };
 
@@ -36,6 +41,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                value={login.email}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -48,6 +54,7 @@ const Login = () => {
               <input
                 type="password"
                 name="password"
+                value={login.password}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -65,9 +72,10 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={btnLoading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
             >
-              Log in
+              {btnLoading ? "Logging in..." : "Log in"}
             </button>
           </form>
         </CardContent>

@@ -5,8 +5,8 @@ import { Toaster } from "react-hot-toast";
 
 const AuthContext = createContext();
 
-// Set base URL for consistent API calls
-const SERVER = import.meta.env.SERVER;
+// Fix: Correctly access environment variable
+const SERVER = "http://localhost:8080/api";
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.post(`${SERVER}/user/login`, login);
-      console.log("Login response:", data.data);
+      console.log("Login response:", data);
 
       // Store token and user info
       localStorage.setItem("token", data.token);
@@ -43,9 +43,9 @@ export const UserProvider = ({ children }) => {
   async function signInUser(sign, navigate) {
     setBtnLoading(true);
     try {
-      // Fixed inconsistent URL, should be same base as other APIs
+      // Fixed URL to use SERVER constant
       const { data } = await axios.post(`${SERVER}/user/sign`, sign);
-      console.log("SignIn response:", data.data);
+      console.log("SignIn response:", data);
 
       // Store token and user info
       localStorage.setItem("token", data.token);
@@ -109,6 +109,11 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     fetchUser();
+  }, []);
+
+  // Log server URL for debugging
+  useEffect(() => {
+    console.log("Server URL:", SERVER);
   }, []);
 
   return (

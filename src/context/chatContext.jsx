@@ -6,14 +6,15 @@ import { AuthData } from "./authContext";
 import { io } from "socket.io-client";
 
 const ChatContext = createContext();
+const SERVER = "http://localhost:8080/api";
 
 export const ChatProvider = ({ children }) => {
-  const SERVER = import.meta.env.SERVER;
   const { user, isAuth } = AuthData();
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [error, setError] = useState(null);
+  const [currentChat, setCurrentChat] = useState({});
 
   // Initialize socket connection
   useEffect(() => {
@@ -51,44 +52,40 @@ export const ChatProvider = ({ children }) => {
     }
   }, [isAuth, user]);
 
-  // Load conversations
+  const getConversations = async () => {
+    if (!isAuth || !user?._id) {
+      console.log("Not fetching conversations - user not authenticated");
+      return;
+    }
+
+    console.log("Fetching conversations for user:", user._id);
+    try {
+      setLoading(true);
+      setError(null);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const { data } = await axios.get(`${SERVER}/conversations/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Conversations loaded:", data);
+      setConversations(data);
+      setLoading(false);
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || err.message;
+      console.error("Error loading conversations:", errorMsg);
+      setError(`Failed to load conversations: ${errorMsg}`);
+      toast.error("Failed to load conversations");
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getConversations = async () => {
-      if (!isAuth || !user?._id) {
-        console.log("Not fetching conversations - user not authenticated");
-        return;
-      }
-
-      console.log("Fetching conversations for user:", user._id);
-      try {
-        setLoading(true);
-        setError(null);
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("No authentication token found");
-        }
-
-        const { data } = await axios.get(
-          `${SERVER}/conversations/${user._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("Conversations loaded:", data);
-        setConversations(data);
-        setLoading(false);
-      } catch (err) {
-        const errorMsg = err.response?.data?.message || err.message;
-        console.error("Error loading conversations:", errorMsg);
-        setError(`Failed to load conversations: ${errorMsg}`);
-        toast.error("Failed to load conversations");
-        setLoading(false);
-      }
-    };
-
     getConversations();
   }, [user, isAuth]);
 
