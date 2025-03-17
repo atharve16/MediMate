@@ -1,12 +1,35 @@
-# React + Vite
+MediMate – Health Monitoring System 🏥💻
+MediMate is a full-stack web application designed to improve healthcare accessibility by enabling real-time doctor-patient communication, virtual consultations, and automated prescription generation.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tech Stack
+Frontend: React (Vite)
+Backend: Node.js, Express.js
+Database: MongoDB
+Real-time Messaging: Socket.io
+Video Consultation: WebRTC
+Prescription Generator: Gemini Chatbot API
+Authentication: JWT
+Features
+✅ Real-time messaging for seamless doctor-patient interaction
+✅ Secure virtual consultations via WebRTC
+✅ AI-powered prescription generation
+✅ JWT authentication for user security
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Setup Instructions
+Clone the repository:
+bash
+Copy
+Edit
+git clone https://github.com/your-username/MediMate.git
+cd MediMate
+Install dependencies:
+bash
+Copy
+Edit
+npm install
+Start the development server:
+bash
+Copy
+Edit
+npm run dev
+💡 Contributions, feedback, and suggestions are welcome! Feel free to explore and enhance this project. 🚀
