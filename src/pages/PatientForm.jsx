@@ -1,5 +1,10 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "../Component/assets/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../Component/assets/Card";
 import axios from "axios";
 
 const PatientForm = () => {

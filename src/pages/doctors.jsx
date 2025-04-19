@@ -32,7 +32,7 @@ const Doctor = () => {
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+    transition: { duration: 0.6 },
   };
 
   // Render loading state
@@ -57,7 +57,7 @@ const Doctor = () => {
             Connection Error
           </h2>
           <p className="text-red-600 mb-4">{error}</p>
-          <button 
+          <button
             onClick={fetchDoctors}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
           >
@@ -72,16 +72,13 @@ const Doctor = () => {
     <div className="bg-gradient-to-b from-white to-blue-50 py-20">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <motion.div 
-          className="text-center mb-16"
-          {...fadeIn}
-        >
+        <motion.div className="text-center mb-16" {...fadeIn}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Meet Our Expert Doctors
           </h2>
           <p className="text-xl text-gray-600">
-            {doctors.length > 0 
-              ? "Experienced healthcare professionals at your service" 
+            {doctors.length > 0
+              ? "Experienced healthcare professionals at your service"
               : "No doctors currently available"}
           </p>
         </motion.div>
@@ -90,8 +87,8 @@ const Doctor = () => {
         {doctors.length === 0 ? (
           <div className="text-center py-16 bg-gray-100 rounded-xl">
             <p className="text-xl text-gray-600">
-              Our doctor roster is currently being updated. 
-              Please check back soon!
+              Our doctor roster is currently being updated. Please check back
+              soon!
             </p>
           </div>
         ) : (
@@ -101,9 +98,9 @@ const Doctor = () => {
                 key={doctor.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: index * 0.1 
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
                 }}
                 className="hover:scale-105 transition-transform duration-300"
               >
@@ -114,17 +111,19 @@ const Doctor = () => {
                       alt={doctor.doctorName}
                       className="w-full h-64 object-cover"
                     />
-                    <div className={`
+                    <div
+                      className={`
                       absolute top-4 right-4 px-3 py-1 rounded-full text-white text-sm
-                      ${doctor.avaibility === 'Available' 
-                        ? 'bg-green-500' 
-                        : 'bg-red-500'
+                      ${
+                        doctor.avaibility === "Available"
+                          ? "bg-green-500"
+                          : "bg-red-500"
                       }`}
                     >
                       {doctor.avaibility}
                     </div>
                   </div>
-                  
+
                   <div className="p-6">
                     <h3 className="text-xl font-semibold mb-2">
                       {doctor.doctorName}
@@ -136,7 +135,7 @@ const Doctor = () => {
                         {doctor.exp} Years Experience
                       </span>
                     </div>
-                    
+
                     <div className="flex space-x-3">
                       <button
                         onClick={() => navigate("/virtual-consult")}

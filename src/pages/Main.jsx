@@ -2,10 +2,26 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { Calendar, Heart, MessageSquare,
-  Video, FileText, Users, Bell, ChevronRight, Star, 
-  Activity, Stethoscope, Shield } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from "../Component/assets/Card";
+import {
+  Calendar,
+  Heart,
+  MessageSquare,
+  Video,
+  FileText,
+  Users,
+  Bell,
+  ChevronRight,
+  Star,
+  Activity,
+  Stethoscope,
+  Shield,
+} from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../Component/assets/Card";
 import Doctor from "./doctors";
 
 const services = [

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const virtualConsult = () => {
-  return (
-    <div>virtualConsult</div>
-  )
-}
+  return <div>virtualConsult</div>;
+};
 
-export default virtualConsult
+export default virtualConsult;
