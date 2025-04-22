@@ -5,9 +5,10 @@ import { AuthData } from "../context/authContext"; // Make sure this path is cor
 const Navbar = () => {
   const { isAuth, user, Logout } = AuthData();
   const navigate = useNavigate();
-  
+
   // Get first character of user's name for profile button
-  const profileInitial = isAuth && user?.name ? user.name.charAt(0).toUpperCase() : "";
+  const profileInitial =
+    isAuth && user?.name ? user.name.charAt(0).toUpperCase() : "";
 
   const handleLogout = () => {
     Logout(navigate);
@@ -26,7 +27,7 @@ const Navbar = () => {
             />
             <span className="text-2xl font-bold text-blue-600">Medimate</span>
           </div>
-          
+
           {/* Navigation Links */}
           <div className="hidden md:flex space-x-6 items-center">
             <Link
@@ -90,7 +91,7 @@ const Navbar = () => {
               Contact
             </Link>
           </div>
-          
+
           {/* Sign-In/Profile Button */}
           <div className="flex items-center space-x-4">
             {isAuth ? (
