@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MessageSquare, Video, AlertTriangle, Loader2 } from "lucide-react";
+import { ChatData } from "../context/chatContext"; // Adjust path as needed
+import { AuthData } from "../context/authContext"; // Adjust path as needed
 
 const Doctor = () => {
   const navigate = useNavigate();
+  const { startNewConversation, setCurrentChat } = ChatData();
+  const { user } = AuthData();
+
   const [doctors, setDoctors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,8 +19,22 @@ const Doctor = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:8080/doctor");
-      setDoctors(response.data);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
+      const response = await axios.get("http://localhost:8080/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Filter only users with role "doctor"
+      const doctorsList = response.data.filter(
+        (user) => user.role === "doctor"
+      );
+      setDoctors(doctorsList);
     } catch (error) {
       console.error("Error fetching doctors:", error);
       setError("Unable to load doctors. Please try again later.");
@@ -24,9 +43,26 @@ const Doctor = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchDoctors();
-  // }, []);
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  // Handle starting a conversation with a doctor
+  const handleStartConversation = async (doctorId) => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const conversation = await startNewConversation(doctorId);
+      if (conversation) {
+        navigate("/message");
+      }
+    } catch (error) {
+      console.error("Error starting conversation:", error);
+    }
+  };
 
   // Fade in animation configuration
   const fadeIn = {
@@ -95,7 +131,7 @@ const Doctor = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {doctors.map((doctor, index) => (
               <motion.div
-                key={doctor.id}
+                key={doctor._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -107,8 +143,8 @@ const Doctor = () => {
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                   <div className="relative">
                     <img
-                      src="/api/placeholder/300/300"
-                      alt={doctor.doctorName}
+                      src={doctor.image || "/api/placeholder/300/300"}
+                      alt={doctor.name}
                       className="w-full h-64 object-cover"
                     />
                     <div
@@ -120,19 +156,21 @@ const Doctor = () => {
                           : "bg-red-500"
                       }`}
                     >
-                      {doctor.avaibility}
+                      {doctor.avaibility || "Busy"}
                     </div>
                   </div>
 
                   <div className="p-6">
                     <h3 className="text-xl font-semibold mb-2">
-                      {doctor.doctorName}
+                      {doctor.name}
                     </h3>
                     <div className="flex items-center mb-4">
-                      <span className="text-blue-600">{doctor.speciality}</span>
+                      <span className="text-blue-600">
+                        {doctor.speciality || "General Medicine"}
+                      </span>
                       <span className="mx-2">•</span>
                       <span className="text-gray-600">
-                        {doctor.exp} Years Experience
+                        {doctor.exp || "5"} Years Experience
                       </span>
                     </div>
 
@@ -147,7 +185,7 @@ const Doctor = () => {
                         Video Consult
                       </button>
                       <button
-                        onClick={() => navigate("/message")}
+                        onClick={() => handleStartConversation(doctor._id)}
                         className="flex-1 border border-blue-600 text-blue-600 
                         py-2 rounded-lg hover:bg-blue-50 transition-colors 
                         flex items-center justify-center gap-2"

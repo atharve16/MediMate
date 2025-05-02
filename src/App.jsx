@@ -7,10 +7,11 @@ import Footer from "./Component/footer";
 import Medimate from "./pages/Main";
 import Message from "./pages/message";
 import Doctor from "./pages/doctors";
-import Virtual from "./pages/virtual";
 import ReportCard from "./pages/report";
 import PatientForm from "./pages/PatientForm";
 import { AuthData } from "./context/authContext";
+import LobbyScreen from "./VirtualConsultation/lobby";
+import RoomPage from "./VirtualConsultation/room";
 
 const App = () => {
   const { isAuth } = AuthData();
@@ -33,7 +34,11 @@ const App = () => {
             />
             <Route
               path="/virtual-consult"
-              element={isAuth ? <Virtual /> : <Login />}
+              element={isAuth ? <LobbyScreen /> : <Login />}
+            />
+            <Route
+              path="/room/:id"
+              element={isAuth ? <RoomPage /> : <Login />}
             />
             <Route path="/message" element={isAuth ? <Message /> : <Login />} />
             <Route path="/doctors" element={isAuth ? <Doctor /> : <Login />} />
